@@ -1,0 +1,14 @@
+.heart{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.bottom-right-corner {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+  }
+  

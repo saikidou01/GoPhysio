@@ -1,0 +1,298 @@
+import React from "react";
+import { Pose } from "@mediapipe/pose";
+import * as cam from "@mediapipe/camera_utils";
+import Webcam from "react-webcam";
+import { useRef, useEffect } from "react";
+import angleBetweenThreePoints from "./angle";
+import { Button } from "@material-ui/core";
+import sidewayslegraise from "../assets/images/sideways.jpeg"
+import sittostand from "../assets/images/sit-to-stand.png"
+import forwardlegraise from "../assets/images/forward-leg-raises.jpeg"
+import { Link } from "react-router-dom";
+
+const styles = {
+  webcam: {
+    position: "absolute",
+    marginRight: "auto",
+    marginLeft: "auto",
+    left: 0,
+    right: 800,
+    top: 200,
+    textAlign: "center",
+    zIndex: 9,
+    width: 860,
+    height: 645,
+  },
+  countBox: {
+    position: "absolute",
+    marginRight: "auto",
+    marginLeft: "auto",
+    left: 1100,
+    right: 0,
+    top: 600,
+    width: 400,
+    height: 100,
+  },
+  selectBox: {
+    position: "absolute",
+    marginRight: "auto",
+    marginLeft: "auto",
+    left: 900,
+    right: 0,
+    top: 200,
+    textAlign: "center",
+    width: 400,
+    color: "#b3a69f",
+    background: "#1f2838",
+  },
+  back: {
+    position: "fixed",
+    bottom: 0,
+    right: 0
+  },
+};
+
+const exrInfo = {
+  sidewaysLegRaise: {
+    index: [27, 23, 28],
+    anomalyIndex: [27, 23, 28],
+    ul: 35,
+    ll: 15,
+  },
+  sitToStand: {
+    index: [24, 26, 28],
+    ul: 165,
+    ll: 85,
+  },
+  forwardLegRaise: {
+    index: [12, 14, 16],
+    ul: 160,
+    ll: 80,
+  },
+ 
+};
+
+let count = 0;
+let dir = 0;
+let angle = 0;
+function Counter(props) {
+ 
+
+  let imgSource;
+  if (props.exercise === "sidewaysLegRaise") {
+    imgSource = sidewayslegraise;
+  } else if (props.exercise === "sitToStand") {
+    imgSource = sittostand;
+  } else if (props.exercise === "forwardLegRaise") {
+    imgSource = forwardlegraise;
+  }
+
+  const webcamRef = useRef(null);
+  const canvasRef = useRef(null);
+
+  let camera = null;
+  const countTextbox = useRef(null);
+
+  function onResult(results) {
+    if (results.poseLandmarks) {
+      const position = results.poseLandmarks;
+
+      // set height and width of canvas
+      canvasRef.current.width = webcamRef.current.video.videoWidth;
+      canvasRef.current.height = webcamRef.current.video.videoHeight;
+
+      const width = canvasRef.current.width;
+      const height = canvasRef.current.height;
+
+      //ratios between 0-1, covert them to pixel positions
+      const upadatedPos = [];
+      const indexArray = exrInfo[props.exercise].index;
+      const anomalyIndexArray = exrInfo[props.exercise].anomalyIndex;
+
+      for (let i = 0; i < 3; i += 1) {
+        upadatedPos.push({
+          x: position[indexArray[i]].x * width,
+          y: position[indexArray[i]].y * height,
+        });
+      }
+      
+      angle = Math.round(angleBetweenThreePoints(upadatedPos));
+      
+    
+    //  if (props.exercise === "sidewaysLegRaise") {
+    //   const anomalyUpdatedPos = [];
+    //   for (let i = 0; i < anomalyIndexArray.length; i++) {
+    //       anomalyUpdatedPos.push({
+    //           x: position[anomalyIndexArray[i]].x * width,
+    //           y: position[anomalyIndexArray[i]].y * height,
+    //       });
+    //   }
+    //   const anomalyAngle = Math.round(angleBetweenThreePoints(anomalyUpdatedPos));
+
+      
+    //   if (Math.abs(anomalyAngle - 180) > 10) {
+    //       console.log("Anomaly detected: Bending detected during sideways leg raise");
+    //       // Handle the anomaly detection here
+    //   }
+    // }
+
+
+     
+      if (angle > exrInfo[props.exercise].ul) {
+        
+        if (dir === 0) {
+          console.log(count, " ", dir, " decrement ", angle);
+          dir = 1;
+        }
+      }
+      if (angle < exrInfo[props.exercise].ll) {
+         if (dir === 1) {
+          count = count + 1;
+          var message = new SpeechSynthesisUtterance();
+          message.text = count;
+          window.speechSynthesis.speak(message);
+          console.log(count, " ", dir, " increment ", angle);
+          dir = 0;
+        }
+      }
+
+
+      
+      const canvasElement = canvasRef.current;
+      const canvasCtx = canvasElement.getContext("2d");
+      canvasCtx.save();
+
+      canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+      
+
+      for (let i = 0; i < 2; i++) {
+        canvasCtx.beginPath();
+        canvasCtx.moveTo(upadatedPos[i].x, upadatedPos[i].y);
+        canvasCtx.lineTo(upadatedPos[i + 1].x, upadatedPos[i + 1].y);
+        canvasCtx.lineWidth = 2;
+        canvasCtx.strokeStyle = "white";
+        canvasCtx.stroke();
+      }
+      for (let i = 0; i < 3; i++) {
+        canvasCtx.beginPath();
+        canvasCtx.arc(upadatedPos[i].x, upadatedPos[i].y, 10, 0, Math.PI * 2);
+        canvasCtx.fillStyle = "#AAFF00";
+        canvasCtx.fill();
+      }
+      canvasCtx.font = "40px aerial";
+      canvasCtx.fillText(angle, upadatedPos[1].x + 10, upadatedPos[1].y + 40);
+      canvasCtx.restore();
+    }
+  }
+
+  useEffect(() => {
+    console.log("rendered");
+    count = 0;
+    dir = 0;
+
+    const pose = new Pose({
+      locateFile: (file) => {
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/${file}`;
+      },
+    });
+    pose.setOptions({
+      modelComplexity: 1,
+      smoothLandmarks: true,
+      minDetectionConfidence: 0.6,
+      minTrackingConfidence: 0.5,
+    });
+
+    pose.onResults(onResult);
+
+    if (
+      typeof webcamRef.current !== "undefined" &&
+      webcamRef.current !== null
+    ) {
+      camera = new cam.Camera(webcamRef.current.video, {
+        onFrame: async () => {
+          if(countTextbox.current) countTextbox.current.value = count;
+
+          if(webcamRef.current) await pose.send({ image: webcamRef.current.video });
+        },
+        width: 640,
+        height: 480,
+      });
+      camera.start();
+    }
+  });
+ 
+  function resetCount() {
+    console.log("clicked");
+    count = 0;
+    dir = 0;
+  }
+
+  return (
+    <div>
+      <div style={styles.selectBox}>
+      {(() => {
+        if (props.exercise === "sidewaysLegRaise") {
+          return (
+            <h1>Sideways Leg Raise</h1>
+          )
+        } else if (props.exercise === "sitToStand") {
+          return (
+            <h1>Sit To Stand</h1>
+          )
+        } else {
+          return (
+            <h1>Forward Leg Raises</h1>
+          )
+        } 
+      })()}
+
+      {/* Different img properties for large width images */}
+      {(() => {
+        if (props.exercise === "forwardLegRaise" || props.exercise === "crunches") {
+          return (
+            <img src={imgSource} width="450" style={{ marginTop:100}} alternate="bicepimage"></img>
+          )
+        } else {
+          return (
+            <img src={imgSource} width="200" alternate="bicepimage"></img>
+          )
+        }
+      })()}
+     
+        <br></br>
+        <div style={{ top: 50 }}>
+          <h1>Count</h1>
+          <input
+            variant="filled"
+            ref={countTextbox}
+            value={count}
+            textAlign="center"
+            style={{ height: 50, fontSize: 40, width: 80 }}
+          />
+          <br></br>
+          <br></br>
+          <Button
+            style={{ backgroundColor:'#b3a69f',fontWeight:'bold', top: 15 }}
+            size="large"
+            variant="contained"
+            color="Yellow"
+            onClick={resetCount}
+          >
+            Reset Counter
+          </Button>
+        </div>
+      </div>
+      <Webcam ref={webcamRef} style={styles.webcam} />
+      <canvas ref={canvasRef} style={styles.webcam} />
+      <div style={styles.back}>
+        <Link to="/counter">
+          <Button size="large" variant="contained"  style={{backgroundColor:'#b3a69f',fontWeight:'bold'}}>
+            Back
+          </Button>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+export default Counter;
