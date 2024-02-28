@@ -41,15 +41,15 @@ const CounterPage = () => {
         }}
       >
      
-        <Link style={{color: '#b3a69f', textDecoration: 'none'}}to="/bicepcurls">
+        <Link style={{color: '#00C2CB', textDecoration: 'none'}}to="/bicepcurls">
           <img src={sidewayslegraise} alt="bicepimage" width="190" style={{marginLeft:0,marginRight:50}}></img>
           <h1>Sideways leg raises</h1>
         </Link>
-        <Link style={{color: '#b3a69f', textDecoration: 'none'}} to="/squats">
+        <Link style={{color: '#00C2CB', textDecoration: 'none'}} to="/squats">
           <img src={sittostand} alt="bicepimage" width="250" style={{marginTop:2, marginLeft:50,marginRight:50}}></img>
           <h1>Sit to Stand</h1>
         </Link>
-        <Link style={{color: '#b3a69f', textDecoration: 'none'}} to="/pushups">
+        <Link style={{color: '#00C2CB', textDecoration: 'none'}} to="/pushups">
           <img src={forwardlegraise} alt="bicepimage" width="200" style={{marginTop:0.5, marginLeft:50,marginRight:50}}></img>
           <h1>Forward Leg raises</h1>
         </Link>
@@ -58,7 +58,7 @@ const CounterPage = () => {
 
       <div style={styles.back}>
         <Link to="/">
-          <Button size="large" variant="contained"  style={{backgroundColor:'#b3a69f',fontWeight:'bold'}}>
+          <Button size="large" variant="contained"  style={{backgroundColor:'#00C2CB',fontWeight:'bold'}}>
             Back
           </Button>
         </Link>

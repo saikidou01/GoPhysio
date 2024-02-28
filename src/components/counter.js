@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useState} from "react";
 import { Pose } from "@mediapipe/pose";
 import * as cam from "@mediapipe/camera_utils";
 import Webcam from "react-webcam";
@@ -42,8 +42,8 @@ const styles = {
     top: 200,
     textAlign: "center",
     width: 400,
-    color: "#b3a69f",
-    background: "#1f2838",
+    color: "#00C2CB",
+    background: "#FFFDD0",
   },
   back: {
     position: "fixed",
@@ -55,29 +55,36 @@ const styles = {
 const exrInfo = {
   sidewaysLegRaise: {
     index: [27, 23, 28],
-    anomalyIndex: [27, 23, 28],
     ul: 35,
     ll: 15,
+    bad_index: [ 11,23,27],
   },
   sitToStand: {
     index: [24, 26, 28],
     ul: 165,
     ll: 85,
+    bad_index: [12,24,26],
   },
   forwardLegRaise: {
-    index: [12, 14, 16],
+    index: [27,23,28],
     ul: 160,
     ll: 80,
+    bad_index: [23,25,27],
   },
  
 };
+ 
+
+
 
 let count = 0;
 let dir = 0;
 let angle = 0;
+let bad_angle = 0;
+let status = "";
 function Counter(props) {
  
-
+ // const [status, setStatus] = useState("");
   let imgSource;
   if (props.exercise === "sidewaysLegRaise") {
     imgSource = sidewayslegraise;
@@ -92,6 +99,7 @@ function Counter(props) {
 
   let camera = null;
   const countTextbox = useRef(null);
+  const statusTextbox = useRef(null);
 
   function onResult(results) {
     if (results.poseLandmarks) {
@@ -106,8 +114,10 @@ function Counter(props) {
 
       //ratios between 0-1, covert them to pixel positions
       const upadatedPos = [];
+      const upadatedBadPos = [];
       const indexArray = exrInfo[props.exercise].index;
-      const anomalyIndexArray = exrInfo[props.exercise].anomalyIndex;
+      const badIndexArray = exrInfo[props.exercise].bad_index;
+
 
       for (let i = 0; i < 3; i += 1) {
         upadatedPos.push({
@@ -115,8 +125,17 @@ function Counter(props) {
           y: position[indexArray[i]].y * height,
         });
       }
+
+      for (let i = 0; i < 3; i += 1) {
+        upadatedBadPos.push({
+          x: position[badIndexArray[i]].x * width,
+          y: position[badIndexArray[i]].y * height,
+        });
+      }
       
       angle = Math.round(angleBetweenThreePoints(upadatedPos));
+      bad_angle = Math.round(angleBetweenThreePoints(upadatedBadPos));
+      // console.log(bad_angle)
       
     
     //  if (props.exercise === "sidewaysLegRaise") {
@@ -136,8 +155,51 @@ function Counter(props) {
     //   }
     // }
 
-
-     
+    if (props.exercise === "sidewaysLegRaise"){
+      if(bad_angle<160){
+          console.log("Anomaly");
+         // setStatus("Please correct posture");
+          status = "Please straighten your back";
+          console.log(status);
+          var mes = new SpeechSynthesisUtterance();
+          mes.text = "Please straighten your back";
+          window.speechSynthesis.speak(mes);
+      }
+      else{
+       // setStatus("correct");
+       status = "correct";
+      }
+    }
+    if (props.exercise === "sitToStand"){
+      if(bad_angle<60){
+          console.log("Anomaly");
+         // setStatus("Please correct posture");
+          status = "Please keep your back straight";
+          console.log(status);
+          var mes2 = new SpeechSynthesisUtterance();
+          mes2.text = "Please keep your back straight";
+          window.speechSynthesis.speak(mes2);
+      }
+      else{
+       // setStatus("correct");
+       status = "correct";
+      }
+    }
+    if (props.exercise === "forwardLegRaise"){
+      if(bad_angle<140){
+          console.log("Anomaly");
+         // setStatus("Please correct posture");
+          status = "Please straighten your leg";
+          console.log(status);
+          var mes3 = new SpeechSynthesisUtterance();
+          mes3.text = "Please straighten your leg";
+          window.speechSynthesis.speak(mes3);
+      }
+      else{
+       // setStatus("correct");
+       status = "correct";
+      }
+    }
       if (angle > exrInfo[props.exercise].ul) {
         
         if (dir === 0) {
@@ -155,6 +217,7 @@ function Counter(props) {
           dir = 0;
         }
       }
+      
 
 
       
@@ -189,7 +252,7 @@ function Counter(props) {
     console.log("rendered");
     count = 0;
     dir = 0;
-
+    status = "";
     const pose = new Pose({
       locateFile: (file) => {
         return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/${file}`;
@@ -211,6 +274,7 @@ function Counter(props) {
       camera = new cam.Camera(webcamRef.current.video, {
         onFrame: async () => {
           if(countTextbox.current) countTextbox.current.value = count;
+          if(statusTextbox.current) statusTextbox.current.value = status;
 
           if(webcamRef.current) await pose.send({ image: webcamRef.current.video });
         },
@@ -271,8 +335,18 @@ function Counter(props) {
           />
           <br></br>
           <br></br>
+          <h3>Status: </h3>
+          <br />
+          {/* <p>{status}</p> */}
+          <input  variant="filled"
+            ref={statusTextbox}
+            value={status}
+            textAlign="center"
+            style={{ height: 50, fontSize: 40, width: 580 }}></input>
+          <br></br>
+          <br></br>
           <Button
-            style={{ backgroundColor:'#b3a69f',fontWeight:'bold', top: 15 }}
+            style={{ backgroundColor:'#00C2CB',fontWeight:'bold', top: 15 }}
             size="large"
             variant="contained"
             color="Yellow"
@@ -286,7 +360,7 @@ function Counter(props) {
       <canvas ref={canvasRef} style={styles.webcam} />
       <div style={styles.back}>
         <Link to="/counter">
-          <Button size="large" variant="contained"  style={{backgroundColor:'#b3a69f',fontWeight:'bold'}}>
+          <Button size="large" variant="contained"  style={{backgroundColor:'#00C2CB',fontWeight:'bold'}}>
             Back
           </Button>
         </Link>

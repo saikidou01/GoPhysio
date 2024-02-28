@@ -16,7 +16,7 @@ export const Home = () => {
       <div className="home">
         <div
           style={{
-            fontSize: 45,
+            fontSize: 50,
             "font-family": 'Helvetica Neue',
             fontWeight: "bold",
             flex: 1.5,
@@ -29,11 +29,11 @@ export const Home = () => {
           <div style={{ display: "flex", textDecorationLine: "none" }}>
             
             
-            <Link to="/counter" style={{marginLeft: 75}}>
+            <Link to="/counter" style={{marginLeft: 350, marginTop: 150}}>
               <Button
                 size="large"
                 variant="contained"
-                color="yellow"
+                color="#00C2CB"
                 startIcon={<Avatar src={exercise} />}
               >
                 <b>Exercises</b>
@@ -44,7 +44,7 @@ export const Home = () => {
         <img
           src={logo}
           alt="Logo"
-          style={{ flex: 1, width:350, marginRight: 100, marginTop: 50 }}
+          style={{ flex: 0.5, width:1, marginRight: 200, marginTop: 50 }}
         ></img>
       </div>
     </div>

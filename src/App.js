@@ -23,7 +23,7 @@ function App(){
       <Route path='/about'> <About /> </Route>
       <Route path='/bicepcurls'> <Counter exercise={"sidewaysLegRaise"} /> </Route>
       <Route path='/squats'> <Counter exercise={"sitToStand"} /> </Route>
-      <Route path='/pushups'> <Counter exercise={"pushups"} /> </Route>
+      <Route path='/pushups'> <Counter exercise={"forwardLegRaise"} /> </Route>
       <Route path='/crunches'> <Counter exercise={"crunches"} /> </Route>
     </BrowserRouter>
   )

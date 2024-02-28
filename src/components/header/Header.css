@@ -31,13 +31,13 @@
     flex-direction: column;
   }
   
-  .header-top__seperator {
+  /* .header-top__seperator {
     width: 100%;
     border: none;
     height: 2px;
     margin-top: 2px;
     background-color: #b3a69f;
-  }
+  } */
   
   .header-top__navigation {
     display: flex;

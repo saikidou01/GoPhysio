@@ -12,7 +12,7 @@ const Header = () => {
           
           <Link to="/" className="header-logo">
             <img
-              style={{ width: 250, marginBottom: 0 }}
+              style={{ width: 400, marginBottom: 0,marginTop: 70 }}
               src={logo}
               alt="App-logo"
             ></img>
@@ -26,7 +26,7 @@ const Header = () => {
         </section>
       </section>
 
-      <hr className="header-top__seperator" />
+      {/* <hr className="header-top__seperator" /> */}
     </section>
   );
 };
