@@ -67,8 +67,8 @@ const exrInfo = {
   },
   forwardLegRaise: {
     index: [27,23,28],
-    ul: 160,
-    ll: 80,
+    ul: 35,
+    ll: 15,
     bad_index: [23,25,27],
   },
  
@@ -82,6 +82,8 @@ let dir = 0;
 let angle = 0;
 let bad_angle = 0;
 let status = "";
+let a = 0;
+let lastSpokenMessage = "";
 function Counter(props) {
  
  // const [status, setStatus] = useState("");
@@ -138,68 +140,95 @@ function Counter(props) {
       // console.log(bad_angle)
       
     
-    //  if (props.exercise === "sidewaysLegRaise") {
-    //   const anomalyUpdatedPos = [];
-    //   for (let i = 0; i < anomalyIndexArray.length; i++) {
-    //       anomalyUpdatedPos.push({
-    //           x: position[anomalyIndexArray[i]].x * width,
-    //           y: position[anomalyIndexArray[i]].y * height,
-    //       });
-    //   }
-    //   const anomalyAngle = Math.round(angleBetweenThreePoints(anomalyUpdatedPos));
 
-      
-    //   if (Math.abs(anomalyAngle - 180) > 10) {
-    //       console.log("Anomaly detected: Bending detected during sideways leg raise");
-    //       // Handle the anomaly detection here
+  //   if (props.exercise === "sidewaysLegRaise"){
+  //     if(bad_angle<160){
+  //         //console.log("Anomaly");
+  //         status = "Please straighten your back";
+          
+  //     }
+  //     else{
+  //      status = "correct";
+  //     }
+  //     console.log(status);
+  //   }
+
+  //   if (status !== lastSpokenMessage) {
+  //     lastSpokenMessage = status;
+  //     if (status) {
+  //       var mes = new SpeechSynthesisUtterance();
+  //         mes.text = status;
+  //         window.speechSynthesis.speak(mes);
+  //     }
+  // }
+
+    // if (props.exercise === "sitToStand"){
+    //   if(bad_angle<60){
+    //       console.log("Anomaly");
+    //      // setStatus("Please correct posture");
+    //       status = "Please keep your back straight";
+    //      // console.log(status);
+    //       var mes2 = new SpeechSynthesisUtterance();
+    //       mes2.text = "Please keep your back straight";
+    //       window.speechSynthesis.speak(mes2);
+    //   }
+    //   else{
+    //    // setStatus("correct");
+    //    status = "correct";
     //   }
     // }
-
-    if (props.exercise === "sidewaysLegRaise"){
-      if(bad_angle<160){
-          console.log("Anomaly");
-         // setStatus("Please correct posture");
+    // if (props.exercise === "forwardLegRaise"){
+    //   if(bad_angle<140){
+    //       console.log("Anomaly");
+    //      // setStatus("Please correct posture");
+    //       status = "Please straighten your leg";
+    //       //console.log(status);
+    //       var mes3 = new SpeechSynthesisUtterance();
+    //       mes3.text = "Please straighten your leg";
+    //       window.speechSynthesis.speak(mes3);
+    //   }
+    //   else{
+    //    // setStatus("correct");
+    //    status = "correct";
+    //   }
+    // }
+    if (props.exercise === "sidewaysLegRaise") {
+      if (bad_angle < 160) {
+          a = 0;
           status = "Please straighten your back";
-          console.log(status);
-          var mes = new SpeechSynthesisUtterance();
-          mes.text = "Please straighten your back";
+      } else {
+          a = 1;
+          status = "correct";
+      }
+  } else if (props.exercise === "sitToStand") {
+      if (bad_angle < 60) {
+        a=0;
+        status = "Please keep your back straight";
+      } else {
+          a = 1;
+          status = "correct";
+      }
+  } else if (props.exercise === "forwardLegRaise") {
+      if (bad_angle < 140) {
+        a=0;
+          status = "Please straighten your leg";
+      } else {
+        a = 1;
+          status = "correct";
+      }
+  }
+
+  // Speak the message if it's different from the last spoken message
+  if (status !== lastSpokenMessage) {
+      lastSpokenMessage = status;
+      if (status) {
+        var mes = new SpeechSynthesisUtterance();
+          mes.text = status;
           window.speechSynthesis.speak(mes);
       }
-      else{
-       // setStatus("correct");
-       status = "correct";
-      }
-    }
-    if (props.exercise === "sitToStand"){
-      if(bad_angle<60){
-          console.log("Anomaly");
-         // setStatus("Please correct posture");
-          status = "Please keep your back straight";
-          console.log(status);
-          var mes2 = new SpeechSynthesisUtterance();
-          mes2.text = "Please keep your back straight";
-          window.speechSynthesis.speak(mes2);
-      }
-      else{
-       // setStatus("correct");
-       status = "correct";
-      }
-    }
-    if (props.exercise === "forwardLegRaise"){
-      if(bad_angle<140){
-          console.log("Anomaly");
-         // setStatus("Please correct posture");
-          status = "Please straighten your leg";
-          console.log(status);
-          var mes3 = new SpeechSynthesisUtterance();
-          mes3.text = "Please straighten your leg";
-          window.speechSynthesis.speak(mes3);
-      }
-      else{
-       // setStatus("correct");
-       status = "correct";
-      }
-    }
+  }
+
+
       if (angle > exrInfo[props.exercise].ul) {
         
         if (dir === 0) {
@@ -207,8 +236,8 @@ function Counter(props) {
           dir = 1;
         }
       }
-      if (angle < exrInfo[props.exercise].ll) {
-         if (dir === 1) {
+      if (angle < exrInfo[props.exercise].ll && status == "correct") {
+         if (dir === 1 ) {
           count = count + 1;
           var message = new SpeechSynthesisUtterance();
           message.text = count;
@@ -253,6 +282,7 @@ function Counter(props) {
     count = 0;
     dir = 0;
     status = "";
+   
     const pose = new Pose({
       locateFile: (file) => {
         return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/${file}`;
