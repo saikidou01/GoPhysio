@@ -324,18 +324,28 @@ function Counter(props) {
   return (
     <div>
       <div style={styles.selectBox}>
+        <p>Please make sure your whole body is seen in the frame.</p>
       {(() => {
         if (props.exercise === "sidewaysLegRaise") {
           return (
+            <div>
             <h1>Sideways Leg Raise</h1>
+            <p>Instructions: Face the web cam and raise ur right leg</p>
+            </div>
           )
         } else if (props.exercise === "sitToStand") {
           return (
+            <div>
             <h1>Sit To Stand</h1>
+            <p>Instructions: Take a chair, turn to the side which shows your right leg to the web cam</p>
+            </div>
           )
         } else {
           return (
+            <div>
             <h1>Forward Leg Raises</h1>
+            <p>Instructions: Raise left leg while you stand sideways.</p>
+            </div>
           )
         } 
       })()}
