@@ -14,7 +14,7 @@ const HandTrackingComponent = () => {
         const loadModel = async () => {
             // Load the .pkl model using the appropriate library
            // const loadedModel = await nodePickle.load('../assets/models/randomforestclassifier_hand_verdict_model.pkl');
-            const loadedModel = await tfdf.loadTFDFModel('../assets/models/model.json');
+            const loadedModel = await tf.loadGraphModel('../assets/models/model.json');
             setModel(loadedModel);
         };
 
