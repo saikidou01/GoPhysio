@@ -46,6 +46,22 @@ const HandTrackingComponent = () => {
                 videoElement.srcObject = await navigator.mediaDevices.getUserMedia({ video: true });
             }
         };
+        //  BSSSS
+        //  const runHandTracking = async () => {
+        //     if (!handDetection || !model) return;
+
+        //     handDetection.onResults(handleHandResults);
+
+        //     const videoElement = videoRef.current;
+        //     if (videoElement && !videoElement.srcObject) {
+        //         try {
+        //             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        //             videoElement.srcObject = stream;
+        //         } catch (err) {
+        //             console.error("Error accessing the webcam:", err);
+        //         }
+        //     }
+        // };
 
         runHandTracking();
 

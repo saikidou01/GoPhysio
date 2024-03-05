@@ -4,7 +4,7 @@ import Header from "./components/header/header";
 import { BrowserRouter,Route } from "react-router-dom";
 import Home from './pages/Home';
 import CounterPage from "./pages/CounterPage";
-import HandTrackingComponent from "./components/hand";
+import HandTrackingComponent from "./components/hand.js";
 import About from "./pages/about";
 import Counter from "./components/counter";
 
@@ -25,7 +25,7 @@ function App(){
       <Route path='/squats'> <Counter exercise={"sitToStand"} /> </Route>
       <Route path='/pushups'> <Counter exercise={"forwardLegRaise"} /> </Route>
       <Route path='/crunches'> <Counter exercise={"crunches"} /> </Route>
-      <Route path='hands'><HandTrackingComponent/></Route>
+      <Route path='/hands'><HandTrackingComponent/></Route>
     </BrowserRouter>
   )
 }
