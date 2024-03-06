@@ -101,15 +101,6 @@ export default function ClawLandmarkDetection() {
                 return;
             }
 
-            if (webcamRunning === true) {
-                webcamRunning = false;
-                enableWebcamButton.innerText = "ENABLE PREDICTIONS";
-            } else {
-                console.log("webcam was off");
-                webcamRunning = true;
-                enableWebcamButton.innerText = "DISABLE PREDICITONS";
-            }
-
             // getUsermedia parameters.
             const constraints = {
                 video: true
