@@ -261,7 +261,7 @@ export default function ClawLandmarkDetection() {
             <p>Instructions: Face the web cam and bend your left hand fingers as shown.</p>
         </div>
 
-        <img src={claw} width="400" alt="bicepimage" style={{marginTop: 80, transform: 'rotate(90deg)'}} />
+        <img src={claw} width="350" alt="bicepimage" style={{marginTop: 80, transform: 'rotate(90deg)'}} />
         <br /><br />
         <div style={{ top: 50 }}>
             <h1>Count</h1>

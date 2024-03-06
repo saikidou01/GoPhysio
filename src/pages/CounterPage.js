@@ -56,11 +56,11 @@ const CounterPage = () => {
           <h1>Forward Leg raises</h1>
         </Link>
         <Link style={{color: '#00C2CB', textDecoration: 'none'}} to="/claw">
-          <img src={claw} alt="bicepimage" width="300" style={{marginTop:0.5, marginLeft:50,marginRight:50,marginBottom: 50, transform: 'rotate(90deg)'}}></img>
+          <img src={claw} alt="bicepimage" width="230" style={{marginTop:0.5, marginLeft:50,marginRight:50,marginBottom: 25, transform: 'rotate(90deg)'}}></img>
           <h1>Claw Stretch</h1>
         </Link>
         <Link style={{color: '#00C2CB', textDecoration: 'none'}} to="/fingertip">
-          <img src={ftip} alt="bicepimage" width="250" style={{marginTop:0.5, marginLeft:50,marginRight:50}}></img>
+          <img src={ftip} alt="bicepimage" width="270" style={{marginTop:0.5, marginLeft:50,marginRight:50}}></img>
           <h1>FingerTip Touch</h1>
         </Link>
        
