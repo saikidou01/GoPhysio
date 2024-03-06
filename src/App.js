@@ -7,6 +7,7 @@ import CounterPage from "./pages/CounterPage";
 import HandLandmarkDetection from "./components/hand.js";
 import About from "./pages/about";
 import Counter from "./components/counter";
+import Handex from "./components/hands.js";
 
 function App(){
   
@@ -24,8 +25,8 @@ function App(){
       <Route path='/bicepcurls'> <Counter exercise={"sidewaysLegRaise"} /> </Route>
       <Route path='/squats'> <Counter exercise={"sitToStand"} /> </Route>
       <Route path='/pushups'> <Counter exercise={"forwardLegRaise"} /> </Route>
-      <Route path='/crunches'> <Counter exercise={"crunches"} /> </Route>
-      <Route path='/hands'><HandLandmarkDetection/></Route>
+      <Route path='/claw'> <Handex exercise={"claw"} /> </Route>
+      {/* <Route path='/claw'><HandLandmarkDetection/></Route> */}
     </BrowserRouter>
   )
 }

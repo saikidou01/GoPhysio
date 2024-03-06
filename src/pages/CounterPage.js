@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import forwardlegraise from "../assets/images/forward-leg-raises.jpeg"
 import sidewayslegraise from "../assets/images/sideways.jpeg"
 import sittostand from "../assets/images/sit-to-stand.png"
+import claw from "../assets/images/claw.png"
 
 
 const styles = {
@@ -52,6 +53,10 @@ const CounterPage = () => {
         <Link style={{color: '#00C2CB', textDecoration: 'none'}} to="/pushups">
           <img src={forwardlegraise} alt="bicepimage" width="200" style={{marginTop:0.5, marginLeft:50,marginRight:50}}></img>
           <h1>Forward Leg raises</h1>
+        </Link>
+        <Link style={{color: '#00C2CB', textDecoration: 'none'}} to="/claw">
+          <img src={claw} alt="bicepimage" width="200" style={{marginTop:0.5, marginLeft:50,marginRight:50}}></img>
+          <h1>Claw Stretch</h1>
         </Link>
        
       </div>

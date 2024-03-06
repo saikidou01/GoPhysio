@@ -128,7 +128,7 @@ export default function HandLandmarkDetection() {
                             color: "#00FF00",
                             lineWidth: 5
                         }
-                    );
+                    );  
                     drawingUtils.drawLandmarks(landmarks, {
                         color: "#FF0000",
                         lineWidth: 2
@@ -146,9 +146,9 @@ export default function HandLandmarkDetection() {
 
     return (
         <div>
-            <h1>Hello hand landmark detection</h1>
+            
             <div id="liveView" className="videoView">
-                <button id="webcamButton">
+                <button id="webcamButton" style={{marginTop:200, marginLeft:50,marginRight:50}}>
                     <span>ENABLE WEBCAM</span>
                 </button>
                 <div style={{ position: "relative" }}>

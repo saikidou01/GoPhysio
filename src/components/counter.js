@@ -8,6 +8,7 @@ import { Button } from "@material-ui/core";
 import sidewayslegraise from "../assets/images/sideways.jpeg"
 import sittostand from "../assets/images/sit-to-stand.png"
 import forwardlegraise from "../assets/images/forward-leg-raises.jpeg"
+
 import { Link } from "react-router-dom";
 
 const styles = {
@@ -73,8 +74,6 @@ const exrInfo = {
   },
  
 };
- 
-
 
 
 let count = 0;
