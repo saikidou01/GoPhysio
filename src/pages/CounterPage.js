@@ -1,10 +1,11 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+import { Button, Hidden } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import forwardlegraise from "../assets/images/forward-leg-raises.jpeg"
-import sidewayslegraise from "../assets/images/sideways.jpeg"
-import sittostand from "../assets/images/sit-to-stand.png"
-import claw from "../assets/images/claw.png"
+import forwardlegraise from "../assets/images/front.gif"
+import sidewayslegraise from "../assets/images/side.gif"
+import sittostand from "../assets/images/sit.gif"
+import claw from "../assets/images/claw.webp"
+import ftip from "../assets/images/tipt.gif"
 
 
 const styles = {
@@ -35,7 +36,7 @@ const CounterPage = () => {
           direction: "column",
           position: "absolute",
           marginRight: "auto",
-          marginLeft: "auto",
+          marginLeft: "10",
           top:250,
           left:200,
           textAlign:"center"
@@ -43,11 +44,11 @@ const CounterPage = () => {
       >
      
         <Link style={{color: '#00C2CB', textDecoration: 'none'}}to="/bicepcurls">
-          <img src={sidewayslegraise} alt="bicepimage" width="190" style={{marginLeft:0,marginRight:50}}></img>
+          <img src={sidewayslegraise} alt="bicepimage" width="300" style={{marginLeft:0,marginRight:50}}></img>
           <h1>Sideways leg raises</h1>
         </Link>
         <Link style={{color: '#00C2CB', textDecoration: 'none'}} to="/squats">
-          <img src={sittostand} alt="bicepimage" width="250" style={{marginTop:2, marginLeft:50,marginRight:50}}></img>
+          <img src={sittostand} alt="bicepimage" width="200" style={{marginTop:2, marginLeft:50,marginRight:50}}></img>
           <h1>Sit to Stand</h1>
         </Link>
         <Link style={{color: '#00C2CB', textDecoration: 'none'}} to="/pushups">
@@ -55,8 +56,12 @@ const CounterPage = () => {
           <h1>Forward Leg raises</h1>
         </Link>
         <Link style={{color: '#00C2CB', textDecoration: 'none'}} to="/claw">
-          <img src={claw} alt="bicepimage" width="300" style={{marginTop:0.5, marginLeft:50,marginRight:50}}></img>
+          <img src={claw} alt="bicepimage" width="300" style={{marginTop:0.5, marginLeft:50,marginRight:50,marginBottom: 50, transform: 'rotate(90deg)'}}></img>
           <h1>Claw Stretch</h1>
+        </Link>
+        <Link style={{color: '#00C2CB', textDecoration: 'none'}} to="/fingertip">
+          <img src={ftip} alt="bicepimage" width="250" style={{marginTop:0.5, marginLeft:50,marginRight:50}}></img>
+          <h1>FingerTip Touch</h1>
         </Link>
        
       </div>

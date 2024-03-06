@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
-import claw from "../assets/images/claw.webp";
+import ftip from "../assets/images/tipt.gif";
 const styles = {
     webcam: {
       position: "absolute",
@@ -51,7 +51,7 @@ let status= "";
 let a = 0;
 let lastSpokenMessage = "";
 
-export default function ClawLandmarkDetection() {
+export default function FingerLandmarkDetection() {
     const countTextbox = useRef(null);
     const statusTextbox = useRef(null);
     useEffect(() => {
@@ -261,7 +261,7 @@ export default function ClawLandmarkDetection() {
             <p>Instructions: Face the web cam and bend your left hand fingers as shown.</p>
         </div>
 
-        <img src={claw} width="400" alt="bicepimage" style={{marginTop: 80, transform: 'rotate(90deg)'}} />
+        <img src={ftip} width="400" alt="bicepimage" />
         <br /><br />
         <div style={{ top: 50 }}>
             <h1>Count</h1>

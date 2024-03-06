@@ -5,9 +5,9 @@ import Webcam from "react-webcam";
 import { useRef, useEffect } from "react";
 import angleBetweenThreePoints from "./angle";
 import { Button } from "@material-ui/core";
-import sidewayslegraise from "../assets/images/sideways.jpeg"
-import sittostand from "../assets/images/sit-to-stand.png"
-import forwardlegraise from "../assets/images/forward-leg-raises.jpeg"
+import sidewayslegraise from "../assets/images/side.gif"
+import sittostand from "../assets/images/sit.gif"
+import forwardlegraise from "../assets/images/front.gif"
 
 import { Link } from "react-router-dom";
 
@@ -38,6 +38,7 @@ const styles = {
     position: "absolute",
     marginRight: "auto",
     marginLeft: "auto",
+    marginTop: -20,
     left: 900,
     right: 0,
     top: 200,
@@ -353,11 +354,18 @@ function Counter(props) {
       {(() => {
         if (props.exercise === "forwardLegRaise" || props.exercise === "crunches") {
           return (
-            <img src={imgSource} width="450" style={{ marginTop:100}} alternate="bicepimage"></img>
+            <img src={imgSource} width="300" style={{ marginTop:0}} alternate="bicepimage"></img>
           )
-        } else {
+        }
+        else if(props.exercise === "sitToStand")
+        {
           return (
-            <img src={imgSource} width="200" alternate="bicepimage"></img>
+            <img src={imgSource} width="300" alternate="bicepimage"></img>
+          )
+        } 
+        else {
+          return (
+            <img src={imgSource} width="400" alternate="bicepimage"></img>
           )
         }
       })()}

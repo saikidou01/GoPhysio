@@ -4,7 +4,8 @@ import Header from "./components/header/header";
 import { BrowserRouter,Route } from "react-router-dom";
 import Home from './pages/Home';
 import CounterPage from "./pages/CounterPage";
-import HandLandmarkDetection from "./components/hand.js";
+// import HandLandmarkDetection from "./components/hand.js";
+import FingerLandmarkDetection from "./components/fingertip.js";
 import ClawLandmarkDetection from "./components/claw.js";
 import About from "./pages/about";
 import Counter from "./components/counter";
@@ -28,6 +29,7 @@ function App(){
       <Route path='/pushups'> <Counter exercise={"forwardLegRaise"} /> </Route>
       {/* <Route path='/claw'> <Handex exercise={"claw"} /> </Route> */}
       <Route path='/claw'><ClawLandmarkDetection/></Route>
+      <Route path='/fingertip'><FingerLandmarkDetection/></Route>
     </BrowserRouter>
   )
 }
