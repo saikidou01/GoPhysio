@@ -176,7 +176,7 @@ function Handex(props) {
              dir = 1;
            }
          }
-         if (index_angle < ex[props.exercise].ll && status == "correct") {
+         if (index_angle < ex[props.exercise].ll && status === "correct") {
             if (dir === 1 ) {
              count = count + 1;
              var message = new SpeechSynthesisUtterance();
@@ -276,13 +276,13 @@ function Handex(props) {
              return (
                <div>
                <h1>Claw Stretch</h1>
-               <p>Instructions: Face the web cam and bend your fingers of your left hand</p>
+               <p>Instructions: Face the web cam and bend your left hand fingers as shown.</p>
                </div>
              )
            } 
          })()}
 
-        <img src={imgSource} width="200" alternate="bicepimage"></img>
+        <img src={imgSource} width="400" alternate="bicepimage"></img>
            <br></br>
            <div style={{ top: 50 }}>
              <h1>Count</h1>

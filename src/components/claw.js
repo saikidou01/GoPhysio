@@ -1,6 +1,8 @@
 import { FilesetResolver, HandLandmarker, DrawingUtils } from "@mediapipe/tasks-vision";
 import React, { useEffect } from "react";
-
+import { useRef } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@material-ui/core";
 import claw from "../assets/images/claw.png";
 const styles = {
     webcam: {
@@ -31,7 +33,7 @@ const styles = {
       marginLeft: "auto",
       left: 900,
       right: 0,
-      top: 200,
+      top: 125,
       textAlign: "center",
       width: 400,
       color: "#00C2CB",
@@ -44,8 +46,14 @@ const styles = {
     },
 };
 
+let count = 0;
+let status= "";
+let a = 0;
+let lastSpokenMessage = "";
 
 export default function ClawLandmarkDetection() {
+    const countTextbox = useRef(null);
+    const statusTextbox = useRef(null);
     useEffect(() => {
         let handLandmarker;
         let runningMode = "IMAGE";
@@ -113,9 +121,9 @@ export default function ClawLandmarkDetection() {
                 video.addEventListener("loadeddata", predictWebcam);
             });
         }
-        const calculateDistance = (point1, point2) => {
-            return Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2);
-        };
+        // const calculateDistance = (point1, point2) => {
+        //     return Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2);
+        // };
 
         const calculateAngle = (basePoint, middlePoint, tipPoint) => {
             const vector1 = [middlePoint.x - basePoint.x, middlePoint.y - basePoint.y];
@@ -167,6 +175,36 @@ export default function ClawLandmarkDetection() {
                     console.log(row_data)
 
 
+                    if((1>row_data[0]>-3) && (2>row_data[1]>-1) && (5>row_data[2]>0) && (5>row_data[3]>0))
+                    {
+                        a=1;
+                    }
+                    if(a===1 && (row_data[0]>30) && (row_data[1]>10) && (row_data[2]>10) && (row_data[3]>20) && (row_data[4]<0))
+                    {
+                        status = "Correct";
+                        count = count + 1;
+                        var message = new SpeechSynthesisUtterance();
+                        message.text = count;
+                        window.speechSynthesis.speak(message);
+                        a=0;
+                    }
+                    else if(row_data[4]>5)
+                    {
+                        status = "Incorrect!! Please dont bend fingers completely."
+                        a=1;
+                    }
+                    if (status !== lastSpokenMessage) {
+                        lastSpokenMessage = status;
+                        if (status) {
+                          var mes = new SpeechSynthesisUtterance();
+                            mes.text = status;
+                            window.speechSynthesis.speak(mes);
+                        }
+                    }
+                    statusTextbox.current.value = status;
+                    countTextbox.current.value = count;
+
+                    
 
 
 
@@ -189,10 +227,15 @@ export default function ClawLandmarkDetection() {
             // Call this function again to keep predicting when the browser is ready.
             if (webcamRunning === true) {
                 window.requestAnimationFrame(predictWebcam);
+
             }
         }
     })
-
+    function resetCount() {
+        console.log("clicked");
+        count = 0;
+        
+      }
     return (
         // <div>
             
@@ -224,17 +267,17 @@ export default function ClawLandmarkDetection() {
         <p>Please make sure your whole hand is seen in the frame.</p>
         <div>
             <h1>Claw Stretch</h1>
-            <p>Instructions: Face the web cam and bend your fingers of your left hand</p>
+            <p>Instructions: Face the web cam and bend your left hand fingers as shown.</p>
         </div>
 
-        <img src={claw} width="200" alt="bicepimage" />
+        <img src={claw} width="400" alt="bicepimage" />
         <br /><br />
         <div style={{ top: 50 }}>
             <h1>Count</h1>
             <input
                 variant="filled"
-                // ref={countTextbox}
-                // value={count}
+                ref={countTextbox}
+                value={count}
                 textAlign="center"
                 style={{ height: 50, fontSize: 40, width: 80 }}
             />
@@ -243,21 +286,28 @@ export default function ClawLandmarkDetection() {
             <br />
             <input
                 variant="filled"
-                // ref={statusTextbox}
-                // value={status}
+                ref={statusTextbox}
+                value={status}
                 textAlign="center"
                 style={{ height: 50, fontSize: 40, width: 580 }}
             />
             <br /><br />
-            <button
+            <Button
                 style={{ backgroundColor: '#00C2CB', fontWeight: 'bold', top: 15 }}
                 size="large"
                 variant="contained"
                 color="Yellow"
-                // onClick={resetCount}
+                onClick={resetCount}
             >
                 Reset Counter
-            </button>
+            </Button>
+            <div style={styles.back}>
+        <Link to="/counter">
+          <Button size="large" variant="contained"  style={{backgroundColor:'#00C2CB',fontWeight:'bold'}}>
+            Back
+          </Button>
+        </Link>
+      </div>
         </div>
     </div>
 </div>

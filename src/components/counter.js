@@ -235,7 +235,7 @@ function Counter(props) {
           dir = 1;
         }
       }
-      if (angle < exrInfo[props.exercise].ll && status == "correct") {
+      if (angle < exrInfo[props.exercise].ll && status === "correct") {
          if (dir === 1 ) {
           count = count + 1;
           var message = new SpeechSynthesisUtterance();
