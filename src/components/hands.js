@@ -229,8 +229,8 @@ function Handex(props) {
     //      },
     //    });
     const hand = new Hands({
-        locateFile: (file) => {
-          return `https://cdn.jsdelivr.net/npm/@mediapipe/hand@0.10.5/${file}`;
+        locateFile: () => {
+          return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js}`;
         },
       });
       
