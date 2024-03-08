@@ -101,6 +101,15 @@ export default function ClawLandmarkDetection() {
                 return;
             }
 
+            if (webcamRunning === true) {
+                webcamRunning = false;
+                enableWebcamButton.innerText = "ENABLE PREDICTIONS";
+            } else {
+                console.log("webcam was off");
+                webcamRunning = true;
+                enableWebcamButton.innerText = "DISABLE PREDICITONS";
+            }
+
             // getUsermedia parameters.
             const constraints = {
                 video: true
@@ -169,6 +178,7 @@ export default function ClawLandmarkDetection() {
                     if((1>row_data[0]>-3) && (2>row_data[1]>-1) && (5>row_data[2]>0) && (5>row_data[3]>0))
                     {
                         a=1;
+                        console.log("Block 1")
                     }
                     if(a===1 && (row_data[0]>30) && (row_data[1]>10) && (row_data[2]>10) && (row_data[3]>20) && (row_data[4]<0))
                     {
@@ -178,11 +188,13 @@ export default function ClawLandmarkDetection() {
                         message.text = count;
                         window.speechSynthesis.speak(message);
                         a=0;
+                        console.log("Block 2")
                     }
                     else if(row_data[4]>5)
                     {
-                        status = "Incorrect!! Please dont bend fingers completely."
+                        status = "Incorrect! Please dont bend fingers completely."
                         a=1;
+                        console.log("Block 3")
                     }
                     if (status !== lastSpokenMessage) {
                         lastSpokenMessage = status;
@@ -191,11 +203,12 @@ export default function ClawLandmarkDetection() {
                             mes.text = status;
                             window.speechSynthesis.speak(mes);
                         }
+                        console.log("Block 4")
                     }
                     statusTextbox.current.value = status;
                     countTextbox.current.value = count;
 
-                    
+                    console.log("202")
 
 
 
@@ -207,19 +220,26 @@ export default function ClawLandmarkDetection() {
                             lineWidth: 5
                         }
                     );  
+                    console.log("214")
+
                     drawingUtils.drawLandmarks(landmarks, {
                         color: "#FF0000",
                         lineWidth: 2
                     });
                 }
+                console.log("221")
+            }
+            else{
+                console.log("Else lol")
             }
             canvasCtx.restore();
-
+            console.log("227")
             // Call this function again to keep predicting when the browser is ready.
             if (webcamRunning === true) {
                 window.requestAnimationFrame(predictWebcam);
 
             }
+            console.log("233")
         }
     })
     function resetCount() {
