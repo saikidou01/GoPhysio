@@ -198,7 +198,7 @@ export default function FingerLandmarkDetection() {
                         }
 
                     }
-                    else if((distances[current]>0.1) && (row_data[3]<10) && (row_data[5]<10) && (row_data[7]<10))
+                    else if((distances[current]>0.1) && ((distances[0]<=0.1) || (distances[1]<=0.1) || (distances[2]<=0.1) || (distances[3]<=0.1)))
                     {
                         let other_fingers = [0,1,2,3];
                         let index = other_fingers.indexOf(current);
@@ -230,7 +230,7 @@ export default function FingerLandmarkDetection() {
                         }
 
                     }
-                    else if((distances[current]>0.1) && (row_data[1]<10) && (row_data[5]<10) && (row_data[7]<10))
+                    else if((distances[current]>0.1) && ((distances[0]<=0.1) || (distances[1]<=0.1) || (distances[2]<=0.1) || (distances[3]<=0.1)))
                     {
                         let other_fingers = [0,1,2,3];
                         let index = other_fingers.indexOf(current);
@@ -261,7 +261,7 @@ export default function FingerLandmarkDetection() {
                         }
 
                     }
-                    else if((distances[current]>0.1) && (row_data[3]<10) && (row_data[1]<10) && (row_data[7]<10))
+                    else if((distances[current]>0.1) && ((distances[0]<=0.1) || (distances[1]<=0.1) || (distances[2]<=0.1) || (distances[3]<=0.1)))
                     {
                         let other_fingers = [0,1,2,3];
                         let index = other_fingers.indexOf(current);
@@ -292,7 +292,7 @@ export default function FingerLandmarkDetection() {
                         }
 
                     }
-                    else if((distances[current]>0.1) && (row_data[3]<10) && (row_data[5]<10) && (row_data[1]<10))
+                    else if((distances[current]>0.1) && ((distances[0]<=0.1) || (distances[1]<=0.1) || (distances[2]<=0.1) || (distances[3]<=0.1)))
                     {
                         let other_fingers = [0,1,2,3];
                         let index = other_fingers.indexOf(current);
