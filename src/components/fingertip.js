@@ -23,7 +23,7 @@ const styles = {
       marginLeft: "auto",
       left: 1100,
       right: 0,
-      top: 600,
+      top: 300,
       width: 400,
       height: 100,
     },
@@ -409,9 +409,9 @@ export default function FingerLandmarkDetection() {
             <p>Instructions: Bring each of your fingers to your thumb one after the other as shown below.</p>
         </div>
 
-        <img src={ftip} width="400" alt="bicepimage" />
+        <img src={ftip} width="350" alt="bicepimage" style={{marginTop: 80, transform: 'rotate(-90deg)'}}/> 
         <br /><br />
-        <div style={{ top: 50 }}>
+        <div style={styles.countBox}>
             <h1>Count</h1>
             <input
                 variant="filled"
