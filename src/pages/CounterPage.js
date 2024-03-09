@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import forwardlegraise from "../assets/images/front.gif"
 import sidewayslegraise from "../assets/images/side.gif"
 import sittostand from "../assets/images/sit.gif"
-import claw from "../assets/images/claw.webp"
+import claw from "../assets/images/claw.gif"
 import ftip from "../assets/images/tipt.gif"
 
 

@@ -50,6 +50,11 @@ let count = 0;
 let status= "";
 let a = 0;
 let lastSpokenMessage = "";
+let distances ={};
+let current = 0;
+let finger_prompts = ["Index", "Middle", "Ring", "Pinky"];
+let rep_counters = [0,0,0,0];
+let num_repetitions=5;
 
 export default function FingerLandmarkDetection() {
     const countTextbox = useRef(null);
@@ -101,6 +106,14 @@ export default function FingerLandmarkDetection() {
                 return;
             }
 
+            if (webcamRunning === true) {
+                webcamRunning = false;
+                enableWebcamButton.innerText = "ENABLE PREDICTIONS";
+            } else {
+                console.log("webcam was off");
+                webcamRunning = true;
+                enableWebcamButton.innerText = "DISABLE PREDICITONS";
+            }
             // getUsermedia parameters.
             const constraints = {
                 video: true
@@ -112,9 +125,9 @@ export default function FingerLandmarkDetection() {
                 video.addEventListener("loadeddata", predictWebcam);
             });
         }
-        // const calculateDistance = (point1, point2) => {
-        //     return Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2);
-        // };
+        const calculateDistance = (point1, point2) => {
+            return Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2);
+        };
 
         const calculateAngle = (basePoint, middlePoint, tipPoint) => {
             const vector1 = [middlePoint.x - basePoint.x, middlePoint.y - basePoint.y];
@@ -143,46 +156,157 @@ export default function FingerLandmarkDetection() {
             if (results.landmarks) {
                 for (const landmarks of results.landmarks) {
                     const handLandmarks = results.landmarks[0]; // Assuming only one hand is detected
-                    // const thumbTip = handLandmarks[4];
+                    const thumbTip = handLandmarks[4];
                     const fingers = [
-                        [6, 7, 8],
-                        [10, 11, 12],
-                        [14, 15, 16],
-                        [18, 19, 20],
-                        [0,9,10],
+                         [5, 6, 8],
+                        [9, 10, 12],
+                        [13, 14, 16],
+                        [17, 18, 20],
                     ];
 
                     const row_data = [];
 
-                    for (const [fingerPip, fingerDip, fingerTip] of fingers) {
-                        const knucklePoint = handLandmarks[fingerPip];
-                        const middlePoint = handLandmarks[fingerDip];
+                    for (const [fingerKnuckle, fingerMiddle, fingerTip] of fingers) {
+                        const knucklePoint = handLandmarks[fingerKnuckle];
+                        const middlePoint = handLandmarks[fingerMiddle];
                         const tipPoint = handLandmarks[fingerTip];
 
                         const angle = calculateAngle(knucklePoint, middlePoint, tipPoint);
-                        // const distance = calculateDistance(thumbTip, tipPoint);
-                        row_data.push(angle);
+                        const distance = calculateDistance(thumbTip, tipPoint);
+                        row_data.push(distance, angle);
                     }
                     console.log(row_data)
 
+                    distances[0] = row_data[0];   // 0:932490, 1:34908,2:430938,3:39075
+                    distances[1] = row_data[2];
+                    distances[2] = row_data[4];
+                    distances[3] = row_data[6];
 
-                    if((1>row_data[0]>-3) && (2>row_data[1]>-1) && (5>row_data[2]>0) && (5>row_data[3]>0))
+                    
+                    if((current === 0) && (distances[current]<=0.1) && (row_data[3]<10) && (row_data[5]<10) && (row_data[7]<10))
                     {
-                        a=1;
+                        status= "Correct!";
+                        rep_counters[current]+=1;
+                        if(rep_counters[current] >=num_repetitions)
+                        {
+                            count++;
+                            var message = new SpeechSynthesisUtterance();
+                            message.text = count;
+                            window.speechSynthesis.speak(message);
+                            current = (current+1) % 4;
+                            rep_counters[current]=0;
+                        }
+
                     }
-                    if(a===1 && (row_data[0]>30) && (row_data[1]>10) && (row_data[2]>10) && (row_data[3]>20) && (row_data[4]<0))
+                    else if((distances[current]>0.1) && (row_data[3]<10) && (row_data[5]<10) && (row_data[7]<10))
                     {
-                        status = "Correct";
-                        count = count + 1;
-                        var message = new SpeechSynthesisUtterance();
-                        message.text = count;
-                        window.speechSynthesis.speak(message);
-                        a=0;
+                        let other_fingers = [0,1,2,3];
+                        let index = other_fingers.indexOf(current);
+                        other_fingers.splice(index,1);
+                        for (let i of other_fingers.map(x => distances[x])) {
+                            if (i <= 0.1) {
+                                status = `Please touch ${finger_prompts[current]} finger with thumb`;
+                                break;
+                            }
+                        }
                     }
-                    else if(row_data[4]>5)
+                    else
                     {
-                        status = "Incorrect!! Please dont bend fingers completely."
-                        a=1;
+                        status= "Please dont bend the other fingers."
+                    }
+
+                    if((current === 1) && (distances[current]<=0.1) && (row_data[1]<10) && (row_data[5]<10) && (row_data[7]<10))
+                    {
+                        status= "Correct!";
+                        rep_counters[current]+=1;
+                        if(rep_counters[current] >=num_repetitions)
+                        {
+                            count++;
+                            var message1 = new SpeechSynthesisUtterance();
+                            message1.text = count;
+                            window.speechSynthesis.speak(message1);
+                            current = (current+1) % 4;
+                            rep_counters[current]=0;
+                        }
+
+                    }
+                    else if((distances[current]>0.1) && (row_data[3]<10) && (row_data[5]<10) && (row_data[7]<10))
+                    {
+                        let other_fingers = [0,1,2,3];
+                        let index = other_fingers.indexOf(current);
+                        other_fingers.splice(index,1);
+                        for (let i of other_fingers.map(x => distances[x])) {
+                            if (i <= 0.1) {
+                                status = `Please touch ${finger_prompts[current]} finger with thumb`;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        status= "Please dont bend the other fingers."
+                    }
+                    if((current === 2) && (distances[current]<=0.1) && (row_data[3]<10) && (row_data[1]<10) && (row_data[7]<10))
+                    {
+                        status= "Correct!";
+                        rep_counters[current]+=1;
+                        if(rep_counters[current] >=num_repetitions)
+                        {
+                            count++;
+                            var message2 = new SpeechSynthesisUtterance();
+                            message2.text = count;
+                            window.speechSynthesis.speak(message2);
+                            current = (current+1) % 4;
+                            rep_counters[current]=0;
+                        }
+
+                    }
+                    else if((distances[current]>0.1) && (row_data[3]<10) && (row_data[5]<10) && (row_data[7]<10))
+                    {
+                        let other_fingers = [0,1,2,3];
+                        let index = other_fingers.indexOf(current);
+                        other_fingers.splice(index,1);
+                        for (let i of other_fingers.map(x => distances[x])) {
+                            if (i <= 0.1) {
+                                status = `Please touch ${finger_prompts[current]} finger with thumb`;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        status= "Please dont bend the other fingers."
+                    }
+                    if((current === 3) && (distances[current]<=0.1) && (row_data[3]<10) && (row_data[5]<10) && (row_data[1]<10))
+                    {
+                        status= "Correct!";
+                        rep_counters[current]+=1;
+                        if(rep_counters[current] >=num_repetitions)
+                        {
+                            count++;
+                            var message3 = new SpeechSynthesisUtterance();
+                            message3.text = count;
+                            window.speechSynthesis.speak(message3);
+                            current = (current+1) % 4;
+                            rep_counters[current]=0;
+                        }
+
+                    }
+                    else if((distances[current]>0.1) && (row_data[3]<10) && (row_data[5]<10) && (row_data[7]<10))
+                    {
+                        let other_fingers = [0,1,2,3];
+                        let index = other_fingers.indexOf(current);
+                        other_fingers.splice(index,1);
+                        for (let i of other_fingers.map(x => distances[x])) {
+                            if (i <= 0.1) {
+                                status = `Please touch ${finger_prompts[current]} finger with thumb`;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        status= "Please dont bend the other fingers."
                     }
                     if (status !== lastSpokenMessage) {
                         lastSpokenMessage = status;
@@ -192,6 +316,30 @@ export default function FingerLandmarkDetection() {
                             window.speechSynthesis.speak(mes);
                         }
                     }
+
+                    
+                    // if(a===1 && (row_data[0]>30) && (row_data[1]>10) && (row_data[2]>10) && (row_data[3]>20) && (row_data[4]<0))
+                    // {
+                    //     status = "Correct";
+                    //     count = count + 1;
+                    //     var message = new SpeechSynthesisUtterance();
+                    //     message.text = count;
+                    //     window.speechSynthesis.speak(message);
+                    //     a=0;
+                    // }
+                    // else if(row_data[4]>5)
+                    // {
+                    //     status = "Incorrect!! Please dont bend fingers completely."
+                    //     a=1;
+                    // }
+                    // if (status !== lastSpokenMessage) {
+                    //     lastSpokenMessage = status;
+                    //     if (status) {
+                    //       var mes = new SpeechSynthesisUtterance();
+                    //         mes.text = status;
+                    //         window.speechSynthesis.speak(mes);
+                    //     }
+                    // }
                     statusTextbox.current.value = status;
                     countTextbox.current.value = count;
 

@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
-import claw from "../assets/images/claw.webp";
+import claw from "../assets/images/claw.gif";
 const styles = {
     webcam: {
       position: "absolute",
