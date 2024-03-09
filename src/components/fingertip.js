@@ -373,7 +373,7 @@ export default function FingerLandmarkDetection() {
     function resetCount() {
         console.log("clicked");
         count = 0;
-        
+        current = 0;        
       }
     return (
         // <div>
