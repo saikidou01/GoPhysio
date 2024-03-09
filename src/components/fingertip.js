@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import ftip from "../assets/images/tipt.gif";
+import { time } from "@tensorflow/tfjs";
 const styles = {
     webcam: {
       position: "absolute",
@@ -51,6 +52,7 @@ let status= "";
 let a = 0;
 let lastSpokenMessage = "";
 let distances ={};
+let angle = {};
 let current = 0;
 let finger_prompts = ["Index", "Middle", "Ring", "Pinky"];
 let rep_counters = [0,0,0,0];
@@ -59,6 +61,7 @@ let num_repetitions=5;
 export default function FingerLandmarkDetection() {
     const countTextbox = useRef(null);
     const statusTextbox = useRef(null);
+    let currentTime = new Date().getTime();
     useEffect(() => {
         let handLandmarker;
         let runningMode = "IMAGE";
@@ -175,16 +178,26 @@ export default function FingerLandmarkDetection() {
                         const distance = calculateDistance(thumbTip, tipPoint);
                         row_data.push(distance, angle);
                     }
-                    console.log(row_data)
+                    // console.log(row_data)
 
                     distances[0] = row_data[0];   // 0:932490, 1:34908,2:430938,3:39075
                     distances[1] = row_data[2];
                     distances[2] = row_data[4];
                     distances[3] = row_data[6];
+                    angle[0] = row_data[1];
+                    angle[1] = row_data[3];
+                    angle[2] = row_data[5];
+                    angle[3] = row_data[7];
 
-                    
+                    // array which stores all indices except the index of the current finger
+                    let other_fingers = [0,1,2,3];
+                    // remove the current finger from the array
+                    let index = other_fingers.indexOf(current);
+                    other_fingers.splice(index,1);
+
                     if((current === 0) && (distances[current]<=0.1) && (row_data[3]<10) && (row_data[5]<10) && (row_data[7]<10))
-                    {
+                    {   
+                        currentTime = new Date().getTime();
                         status= "Correct!";
                         rep_counters[current]+=1;
                         if(rep_counters[current] >=num_repetitions)
@@ -210,13 +223,17 @@ export default function FingerLandmarkDetection() {
                             }
                         }
                     }
-                    else
+                    // if distance of current is lesser than 0.1 but one of the angles of the fingers (not current finger) is less than 10
+                    else if((distances[current]<=0.1) && ((angle[other_fingers[0]]<10) || (angle[other_fingers[1]]<10) || (angle[other_fingers[2]]<10)))
                     {
-                        status= "Please dont bend the other fingers."
+                        if(currentTime + 2000 < new Date().getTime()){
+                            status= "Please dont bend the other fingers."
+                        }
                     }
 
                     if((current === 1) && (distances[current]<=0.1) && (row_data[1]<10) && (row_data[5]<10) && (row_data[7]<10))
                     {
+                        currentTime = new Date().getTime();
                         status= "Correct!";
                         rep_counters[current]+=1;
                         if(rep_counters[current] >=num_repetitions)
@@ -242,12 +259,15 @@ export default function FingerLandmarkDetection() {
                             }
                         }
                     }
-                    else
+                    else if((distances[current]<=0.1) && ((angle[other_fingers[0]]<10) || (angle[other_fingers[1]]<10) || (angle[other_fingers[2]]<10)))
                     {
-                        status= "Please dont bend the other fingers."
+                        if(currentTime + 2000 < new Date().getTime()){
+                            status= "Please dont bend the other fingers."
+                        }
                     }
                     if((current === 2) && (distances[current]<=0.1) && (row_data[3]<10) && (row_data[1]<10) && (row_data[7]<10))
                     {
+                        currentTime = new Date().getTime();
                         status= "Correct!";
                         rep_counters[current]+=1;
                         if(rep_counters[current] >=num_repetitions)
@@ -273,12 +293,15 @@ export default function FingerLandmarkDetection() {
                             }
                         }
                     }
-                    else
+                    else if((distances[current]<=0.1) && ((angle[other_fingers[0]]<10) || (angle[other_fingers[1]]<10) || (angle[other_fingers[2]]<10)))
                     {
-                        status= "Please dont bend the other fingers."
+                        if(currentTime + 2000 < new Date().getTime()){
+                            status= "Please dont bend the other fingers."
+                        }
                     }
                     if((current === 3) && (distances[current]<=0.1) && (row_data[3]<10) && (row_data[5]<10) && (row_data[1]<10))
                     {
+                        currentTime = new Date().getTime();
                         status= "Correct!";
                         rep_counters[current]+=1;
                         if(rep_counters[current] >=num_repetitions)
@@ -304,9 +327,11 @@ export default function FingerLandmarkDetection() {
                             }
                         }
                     }
-                    else
+                    else if((distances[current]<=0.1) && ((angle[other_fingers[0]]<10) || (angle[other_fingers[1]]<10) || (angle[other_fingers[2]]<10)))
                     {
-                        status= "Please dont bend the other fingers."
+                        if(currentTime + 2000 < new Date().getTime()){
+                            status= "Please dont bend the other fingers."
+                        }
                     }
                     if (status !== lastSpokenMessage) {
                         lastSpokenMessage = status;
