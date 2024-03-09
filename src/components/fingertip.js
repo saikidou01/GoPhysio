@@ -403,10 +403,10 @@ export default function FingerLandmarkDetection() {
 
 <div>
     <div style={styles.selectBox}>
-        <p>Please make sure your whole hand is seen in the frame.</p>
+        <p>Please make sure your entire RIGHT hand is seen in the frame.</p>
         <div>
-            <h1>Claw Stretch</h1>
-            <p>Instructions: Face the web cam and bend your left hand fingers as shown.</p>
+            <h1>Fingertip touch</h1>
+            <p>Instructions: Bring each of your fingers to your thumb one after the other as shown below.</p>
         </div>
 
         <img src={ftip} width="400" alt="bicepimage" />
