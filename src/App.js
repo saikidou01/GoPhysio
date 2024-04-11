@@ -4,7 +4,7 @@ import Header from "./components/header/header";
 import { BrowserRouter,Route } from "react-router-dom";
 import Home from './pages/Home';
 import CounterPage from "./pages/CounterPage";
-import HandLandmarkDetection from "./components/hand.js";
+// import HandLandmarkDetection from "./components/hand.js";
 import FingerLandmarkDetection from "./components/fingertip.js";
 import ClawLandmarkDetection from "./components/claw.js";
 import About from "./pages/about";

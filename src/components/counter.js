@@ -8,7 +8,7 @@ import { Button } from "@material-ui/core";
 import sidewayslegraise from "../assets/images/side.gif"
 import sittostand from "../assets/images/sit.gif"
 import forwardlegraise from "../assets/images/front.gif"
-import raiseHand from "../assets/images/among-us-gif-4.gif"
+import raiseHand from "../assets/images/raises.gif"
 
 import { Link } from "react-router-dom";
 
@@ -39,7 +39,7 @@ const styles = {
     position: "absolute",
     marginRight: "auto",
     marginLeft: "auto",
-    marginTop: -20,
+    marginTop: -100,
     left: 900,
     right: 0,
     top: 200,
@@ -348,14 +348,21 @@ function Counter(props) {
           return (
             <div>
             <h1>Sideways Leg Raise</h1>
-            <p>Instructions: Face the web cam and raise ur right leg</p>
+            <p>Instructions: Face the web cam and raise ur right leg.</p>
             </div>
           )
         } else if (props.exercise === "sitToStand") {
           return (
             <div>
             <h1>Sit To Stand</h1>
-            <p>Instructions: Take a chair, turn to the side which shows your right leg to the web cam</p>
+            <p>Instructions: Take a chair, turn to the side which shows your right leg to the web cam.</p>
+            </div>
+          )
+        }else if (props.exercise === "raiseHands") {
+          return (
+            <div>
+            <h1>Hand Raises</h1>
+            <p>Instructions: Take a chair, sit facing the camera and slowly raise your LEFT arm as shown below.</p>
             </div>
           )
         } else {
