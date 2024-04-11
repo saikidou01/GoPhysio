@@ -27,6 +27,7 @@ function App(){
       <Route path='/bicepcurls'> <Counter exercise={"sidewaysLegRaise"} /> </Route>
       <Route path='/squats'> <Counter exercise={"sitToStand"} /> </Route>
       <Route path='/pushups'> <Counter exercise={"forwardLegRaise"} /> </Route>
+      <Route path='/raisehand'> <Counter exercise={"raiseHands"} /> </Route>
       {/* <Route path='/claw'> <HandLandmarkDetection/> </Route> */}
       <Route path='/claw'><ClawLandmarkDetection/></Route>
       <Route path='/fingertip'><FingerLandmarkDetection/></Route>

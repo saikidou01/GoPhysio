@@ -63,6 +63,10 @@ const CounterPage = () => {
           <img src={ftip} alt="bicepimage" width="270" style={{marginTop:0.5, marginLeft:50,marginRight:50}}></img>
           <h1>FingerTip Touch</h1>
         </Link>
+        <Link style={{color: '#00C2CB', textDecoration: 'none'}} to="/raisehand">
+          <img src={ftip} alt="bicepimage" width="270" style={{marginTop:0.5, marginLeft:50,marginRight:50}}></img>
+          <h1>Hand Raise</h1>
+        </Link>
        
       </div>
 

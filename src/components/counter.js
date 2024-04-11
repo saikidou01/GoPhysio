@@ -8,6 +8,7 @@ import { Button } from "@material-ui/core";
 import sidewayslegraise from "../assets/images/side.gif"
 import sittostand from "../assets/images/sit.gif"
 import forwardlegraise from "../assets/images/front.gif"
+import raiseHand from "../assets/images/among-us-gif-4.gif"
 
 import { Link } from "react-router-dom";
 
