@@ -233,6 +233,7 @@ function Counter(props) {
       a = 1;
         status = "correct";
     }
+  }
 
   // Speak the message if it's different from the last spoken message
   if (status !== lastSpokenMessage) {
