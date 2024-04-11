@@ -73,6 +73,12 @@ const exrInfo = {
     ll: 15,
     bad_index: [23,25,27],
   },
+  raiseHands: {
+    index: [13, 11, 23],
+    ul: 35,
+    ll: 15,
+    bad_index: [ 11,13,15],
+  },
  
 };
 
@@ -94,6 +100,9 @@ function Counter(props) {
     imgSource = sittostand;
   } else if (props.exercise === "forwardLegRaise") {
     imgSource = forwardlegraise;
+  }
+  else if (props.exercise === "raiseHands") {
+    imgSource = raiseHand;
   }
 
   const webcamRef = useRef(null);
@@ -216,7 +225,14 @@ function Counter(props) {
         a = 1;
           status = "correct";
       }
-  }
+  } else if (props.exercise === "raiseHands") {
+    if (bad_angle < 120) {
+      a=0;
+        status = "Please straighten your hand";
+    } else {
+      a = 1;
+        status = "correct";
+    }
 
   // Speak the message if it's different from the last spoken message
   if (status !== lastSpokenMessage) {
