@@ -76,8 +76,8 @@ const exrInfo = {
   },
   raiseHands: {
     index: [13, 11, 23],
-    ul: 35,
-    ll: 15,
+    ul: 90,
+    ll: 25,
     bad_index: [ 11,13,15],
   },
  
